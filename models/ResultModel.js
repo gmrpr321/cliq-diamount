@@ -19,6 +19,14 @@ const ResultModel = mongoose.Schema({
     type: String,
     required: true,
   },
+  shortUrlCode: {
+    type: String,
+    required: true,
+  },
+  shortUrl: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("ResultModel", ResultModel); //NO I18N

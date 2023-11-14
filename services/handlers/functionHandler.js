@@ -49,7 +49,7 @@ const Functions = (function () {
           {
             type: "images",
             title: "",
-            data: [matchingEntry.imageUrl],
+            data: [matchingEntry.shortUrl],
           },
         ],
       };

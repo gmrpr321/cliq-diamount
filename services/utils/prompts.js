@@ -4,9 +4,10 @@ const codeStructure = `mermaid
 function getPrompts(type, data) {
   console.log(data);
   if (type == "simpleDiagramPrompt") {
+    console.log("small");
     if (data.params["size"] == "small")
       return `given is a title for a diagram, give me a simple mermaid code 
-      that is strictly under 70 lines but strictly above 30 lines to
+      that is strictly under 100 lines but strictly above 30 lines to
       best explain this scenario, decide on the best diagram type that
       is available in mermaid to best explain this diagram.Only give me the 
       mermaid code and nothing else.do not try to explain the code.and only give

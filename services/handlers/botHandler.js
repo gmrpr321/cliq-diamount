@@ -3,6 +3,8 @@ const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
 const OpenAI = require("openai");
 const { getPrompts } = require("../utils/prompts");
 const { converter } = require("mermaid-to-svg");
+const shortid = require("shortid");
+const baseUrl = "https://e4f2-103-113-190-40.ngrok.io";
 const Bots = (function () {
   let reqData;
   const _handler = async (data) => {
@@ -61,9 +63,11 @@ const Bots = (function () {
       });
 
       async function getAPIResponse(promptStr) {
+        console.log("code generating");
         const chatCompletion = await openai.chat.completions.create({
           messages: [{ role: "user", content: promptStr }],
           model: "gpt-3.5-turbo",
+          max_tokens: 1000,
         });
         return chatCompletion.choices[0].message;
       }
@@ -100,12 +104,32 @@ const Bots = (function () {
         size: "small",
       });
       if (imageUrl) {
+        const shortCode = shortid.generate();
+        const shortUrl = `${baseUrl}/${currentTime}/${shortCode}`;
+        console.log(
+          "Short URL",
+          shortUrl,
+          `localhost:8080/${userId}/${shortCode}`
+        );
+        //
         await DatabaseUtil.resultModel.addDiagramEntry({
           zuid: userId,
           timenum: currentTime,
           imageUrl: imageUrl,
+          shortUrlCode: shortCode,
+          shortUrl: shortUrl,
           prompt: prompt,
         });
+        // const temp = await DatabaseUtil.resultModel.retriveMatchingDiagramEntry(
+        //   userId,
+        //   currentTime
+        // );
+        // console.log(temp);
+        // const te = await DatabaseUtil.resultModel.getLongUrlForShortUrl(
+        //   userId,
+        //   shortUrl
+        // );
+        // console.log(te);
       }
       //update the latest entry with generated imageUrl
 

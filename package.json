@@ -11,10 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "mermaid-to-svg": "file:./mermaid-js-converter",
     "mongoose": "^6.1.0",
     "morgan": "^1.10.0",
-    "mermaid-to-svg": "file:./mermaid-js-converter",
-    "openai": "^4.17.4"
+    "openai": "^4.17.4",
+    "shortid": "^2.2.16"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

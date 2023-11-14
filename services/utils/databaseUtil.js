@@ -70,6 +70,15 @@ const DatabaseUtil = {
         console.error("Error updating diagram entry:", error.message);
       }
     };
+    const _getLongUrlForShortUrl = async (timenum, shortCode) => {
+      try {
+        const filter = { timenum, shortCode };
+        const matchingDiagram = await ResultModel.findOne(filter);
+        if (matchingDiagram) return matchingDiagram.imageUrl;
+      } catch (e) {
+        console.log("Error in fetching longUrlData", e);
+      }
+    };
 
     // const _getAmountSpentThisWeekAndThisMonth = async (zuid) => {
     //   let today = new Date();
@@ -176,6 +185,7 @@ const DatabaseUtil = {
       retriveLatestDiagramEntry: _retriveLatestDiagramEntry,
       updateLatestDiagramEntry: _updateLatestDiagramEntry,
       retriveMatchingDiagramEntry: _retriveMatchingDiagramEntry,
+      getLongUrlForShortUrl: _getLongUrlForShortUrl,
     };
   })(),
 };

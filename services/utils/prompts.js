@@ -6,8 +6,8 @@ function getPrompts(type, data) {
   if (type == "simpleDiagramPrompt") {
     console.log("small");
     if (data.params["size"] == "small")
-      return `given is a title for a diagram, give me a simple mermaid code 
-      that is strictly under 100 lines but strictly above 30 lines to
+      return `given is a title for a diagram, give me a mermaid code 
+      that is strictly under 120 lines but strictly above 30 lines to
       best explain this scenario, decide on the best diagram type that
       is available in mermaid to best explain this diagram.Only give me the 
       mermaid code and nothing else.do not try to explain the code.and only give
@@ -16,6 +16,7 @@ function getPrompts(type, data) {
       might cause mermaid parser to raise error.only give me the result as it is that can be accepted
       by mermaid parser.first line of the result must always start with the keyword 'mermaid'.
       DO NOT GIVE ME ANY NOTES other than providing me the code.DO NOT SAY ANY NOTE OR EXPLANATION IN THE END
+      DO NOT USE PIE DIAGRAMS.
       title : ${data["promptTitle"]}
       your reply structure : \`\`\`mermaid
                         //code
@@ -32,6 +33,7 @@ function getPrompts(type, data) {
       might cause mermaid parser to raise error.only give me the result as it is that can be accepted
       by mermaid parser.first line of the result must always start with the keyword 'mermaid'.
       DO NOT GIVE ME ANY NOTES other than providing me the code.DO NOT SAY ANY NOTE OR EXPLANATION IN THE END
+      DO NOT USE PIECHARTS.
       title : ${data["promptTitle"]}
       result structure : \`\`\`mermaid
                         //code
@@ -44,11 +46,26 @@ function getPrompts(type, data) {
       code to generate one diagram.do not include anything in the beginning or end that 
       might cause mermaid parser to raise error.only give me the result as it is that can be accepted
       by mermaid parser.first line of the result must always start with the keyword 'mermaid'.
-      DO NOT GIVE ME ANY NOTES other than providing me the code.DO NOT SAY ANY NOTE OR EXPLANATION IN THE END
+      DO NOT GIVE ME ANY NOTES other than providing me the code.DO NOT SAY ANY NOTE OR EXPLANATION IN THE END.
+      IDO NOT USE PIECHARTS.
       title : ${data["promptTitle"]}
       result structure : \`\`\`mermaid
                         //code
                         \`\`\``;
   }
 }
-module.exports = { getPrompts };
+// It will take 20-50 seconds to generate the diagram. Please wait\n\nClick the button to retrieve the diagram. Once the generation is complete, you will get the diagram.
+function getWaitText(size) {
+  if (size == "small")
+    return "It may take 10-30 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagarm.";
+  if (size == "medium")
+    return "It may take 15-30 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagram.";
+  if (size == "large")
+    return "It may take 30-60 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagram.";
+}
+function getWelcomeText() {
+  const data =
+    "Hey, Thank you for subscribing.\nType in the chat to generate a diagram with just a prompt string\nYour prompts can look something like this...\n\n\tExplain the components of a plane\n\tHow MongoDB works ? \n\tGive a sequencce diagram to demonstrate the working of REST APIs.\n\n\nThis bot produces AI generated Diagrams, it may contain inaccurate results.";
+  return data;
+}
+module.exports = { getPrompts, getWaitText, getWelcomeText };

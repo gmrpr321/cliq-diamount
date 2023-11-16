@@ -1,10 +1,10 @@
 const CommonUtil = require("../utils/commonUtil"); //NO I18N
 const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
 const OpenAI = require("openai");
-const { getPrompts } = require("../utils/prompts");
+const { openaiKey, baseUrl } = require("../../config/extensionKeys");
+const { getPrompts, getWaitText, getWelcomeText } = require("../utils/prompts");
 const { converter } = require("mermaid-to-svg");
 const shortid = require("shortid");
-const baseUrl = "https://e4f2-103-113-190-40.ngrok.io";
 const Bots = (function () {
   let reqData;
   const _handler = async (data) => {
@@ -37,7 +37,7 @@ const Bots = (function () {
     console.log("message-JSON", reqData);
     //avoid generating diagrams before the last request has been generated
     let response = {
-      text: "It will take some 15-30 seconds to generate the diagram. Please wait\n\nClick the button to retrieve the diagram. Once the generation is complete, you will get the diagram.",
+      text: getWaitText("small"),
       card: { title: prompt, theme: "modern-inline" },
       buttons: [
         {
@@ -59,7 +59,7 @@ const Bots = (function () {
     try {
       //upload the initial entry in DB for the latest Diagram
       const openai = new OpenAI({
-        apiKey: "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", // defaults to process.env["OPENAI_API_KEY"]
+        apiKey: openaiKey, // defaults to process.env["OPENAI_API_KEY"]
       });
 
       async function getAPIResponse(promptStr) {
@@ -77,10 +77,10 @@ const Bots = (function () {
           getPrompts("simpleDiagramPrompt", { promptTitle: title, params })
         );
         code = generatedCode.content.trim();
-        if (!(((code[0] === code[1]) === code[2]) === "`")) {
-          console.log("yes");
-          code = "```" + generatedCode.content.trim() + "```";
-        }
+        const startSym = code.slice(0, 3);
+        const endSym = code.slice(code.length - 3, code.length);
+        if (startSym !== "```") code = "```" + code;
+        if (endSym !== "```") code = code + "```";
         try {
           console.log(code);
           urls = converter.mdToSVG(code);
@@ -112,6 +112,7 @@ const Bots = (function () {
           `localhost:8080/${userId}/${shortCode}`
         );
         //
+
         await DatabaseUtil.resultModel.addDiagramEntry({
           zuid: userId,
           timenum: currentTime,
@@ -120,40 +121,14 @@ const Bots = (function () {
           shortUrl: shortUrl,
           prompt: prompt,
         });
-        // const temp = await DatabaseUtil.resultModel.retriveMatchingDiagramEntry(
-        //   userId,
-        //   currentTime
-        // );
-        // console.log(temp);
-        // const te = await DatabaseUtil.resultModel.getLongUrlForShortUrl(
-        //   userId,
-        //   shortUrl
-        // );
-        // console.log(te);
       }
-      //update the latest entry with generated imageUrl
-
-      // response = {
-      //   text: "Your Diagram is being generated, Please check after 10-20 seconds ",
-      //   card: { theme: "modern-inline" },
-      //   buttons: [
-      //     {
-      //       label: " View Diagram",
-      //       action: {
-      //         type: "invoke.function",
-      //         data: { name: "getCurrentDiagramBtn" },
-      //       },
-      //     },
-      //   ],
-      // };
-      // return response;
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   };
   const _welcomeHandler = async () => {
     return {
-      text: "Hey! Thanks for subscribing :happy: \nUse the below actions to generate a diagram with just a prompt string.", //NO I18N
+      text: getWelcomeText(), //NO I18N
     };
   };
 

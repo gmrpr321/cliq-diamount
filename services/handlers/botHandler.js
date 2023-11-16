@@ -120,6 +120,7 @@ const Bots = (function () {
           shortUrlCode: shortCode,
           shortUrl: shortUrl,
           prompt: prompt,
+          dateOfGeneration: new Date(),
         });
       }
     } catch (error) {
@@ -140,8 +141,8 @@ const Bots = (function () {
 
     const actionName = reqData.handler.name;
     switch (actionName) {
-      case "Generate": //NO I18N
-        return await _generateDiagram();
+      case "History": //NO I18N
+        return await _getUserHistory();
       case "View Expense": //NO I18N
         return await _viewExpenses(currency);
       case "Settings": //NO I18N
@@ -151,94 +152,31 @@ const Bots = (function () {
     }
   };
 
-  const _generateDiagram = async () => {
+  const _getUserHistory = async () => {
+    const zuid = reqData.params.access.user_id;
     try {
-      // let today = CommonUtil.formatDateWOTime(new Date());
-      let response = {
-        type: "form",
-        title: "Generate a Diagram",
-        name: "generatediagramform",
-        hint: "Give a prompt to generate a diagram, you can modify certain properties of  diagram before generation",
-        button_label: "Generate",
-        inputs: [
+      const recentRecords =
+        await DatabaseUtil.resultModel.retriveLatestDiagramEntry(zuid);
+      let urls = [];
+      for (const temp of recentRecords) {
+        urls.push(temp.shortUrl);
+      }
+      console.log(urls, "Reccent");
+
+      const response = {
+        text: "List of Recent Diagrams",
+        card: { theme: "modern-inline" },
+        slides: [
           {
-            name: "prompt",
-            label: "Prompt",
-            placeholder: "Give a brief description of what you want",
-            min_length: "0",
-            max_length: "25",
-            mandatory: true,
-            type: "text",
-          },
-          {
-            name: "diagramtype",
-            label: "Diagram Type",
-            placeholder: "Enforce a Diagram Type   (Default - let AI decide)",
-            multiple: false,
-            mandatory: false,
-            type: "select",
-            options: [
-              {
-                value: "half_marathon",
-                label: "Half marathon",
-              },
-              {
-                value: "stage_races",
-                label: "Stage races",
-              },
-            ],
-          },
-          {
-            name: "diagramsize",
-            label: "Diagram Size",
-            mandatory: false,
-            type: "radio",
-            options: [
-              {
-                value: "small",
-                label: "Small",
-              },
-              {
-                value: "medium",
-                label: "Medium",
-              },
-              {
-                value: "large",
-                label: "Large",
-              },
-            ],
-          },
-          {
-            name: "diagramtheme",
-            label: "Diagram Theme",
-            mandatory: false,
-            type: "radio",
-            options: [
-              {
-                value: "dark",
-                label: "Dark",
-              },
-              {
-                value: "light",
-                label: "Light",
-              },
-            ],
-          },
-          {
-            name: "includeIcons",
-            label: "Include Icons",
-            value: false,
-            type: "toggle",
+            type: "images",
+            title: "",
+            data: urls,
           },
         ],
-        action: {
-          type: "invoke.function",
-          name: "generateDiagram",
-        },
       };
       return response;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      console.log(e);
     }
   };
 

@@ -11,6 +11,7 @@ const Functions = (function () {
     _initialize(data);
     let response;
     const handler = reqData.handler.type;
+    console.log("Handler Type", handler);
     if (handler === "button_handler") {
       response = await _buttonHandler();
     } else if (handler === "form_handler") {
@@ -60,6 +61,19 @@ const Functions = (function () {
 
   const _formHandler = async () => {
     try {
+      let response = {};
+      const formName = reqParams.form.name;
+      console.log(formName);
+      const formValues = reqParams.form.values;
+      const zuid = reqParams.access.user_id;
+      // { select: { label: 'Past Week', value: 'pastWeek' } }
+
+      if (formName == "history") {
+        const results = await DatabaseUtil.resultModel.getHistory(
+          formValues.select.value
+        );
+        // console.log(results, "results", formValues.select.value);
+      }
     } catch (error) {
       throw error;
     }

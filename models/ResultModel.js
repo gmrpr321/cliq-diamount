@@ -27,6 +27,10 @@ const ResultModel = mongoose.Schema({
     type: String,
     required: true,
   },
+  dateOfGeneration: {
+    type: Date,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("ResultModel", ResultModel); //NO I18N

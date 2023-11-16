@@ -2,6 +2,7 @@ const Users = require("../../models/UsersModel"); //NO I18N
 const ResultModel = require("../../models/ResultModel"); //NO I18N
 
 const CommonUtil = require("./commonUtil"); //NO I18N
+const { query } = require("express");
 
 const DatabaseUtil = {
   users: (function () {
@@ -43,9 +44,12 @@ const DatabaseUtil = {
       return diagramEntry;
     };
     const _retriveLatestDiagramEntry = async (zuid) => {
-      const result = await ResultModel.findOne({ zuid })
+      let result = await ResultModel.find({ zuid })
         .sort({ timenum: -1 })
         .exec();
+      if (result.length > 25) {
+        result.length = 25;
+      }
       console.log("result", result);
       return result;
     };
@@ -78,6 +82,55 @@ const DatabaseUtil = {
       } catch (e) {
         console.log("Error in fetching longUrlData", e);
       }
+    };
+    const _getHistory = async (type) => {
+      let result = {};
+      try {
+      } catch (e) {
+        // try {
+        //   if (type === "today") {
+        //     const today = new Date();
+        //     const startOfDay = today.setHours(0, 0, 0, 0);
+        //     const query = {
+        //       dateOfGeneration: {
+        //         $gte: startOfDay,
+        //         $lt: new Date(),
+        //       },
+        //     };
+        //     result = await ResultModel.find(query);
+        //     console.log(result, "lkk");
+        //   } else if (type === "pastWeek") {
+        //     const today = new Date();
+        //     const startOfWeek = new Date();
+        //     startOfWeek.setDate(today.getDate() - today.getDay());
+        //     startOfWeek.setTime(0, 0, 0, 0);
+        //     const query = {
+        //       dateOfGeneration: {
+        //         $gte: startOfWeek,
+        //         $lt: new Date(),
+        //       },
+        //     };
+        //     result = await ResultModel.find(query);
+        //   } else if (type === "pastMonth") {
+        //     const today = new Date();
+        //     const startOfMonth = new Date(
+        //       today.getFullYear(),
+        //       today.getMonth(),
+        //       1
+        //     );
+        //     startOfMonth.setTime(0, 0, 0, 0);
+        //     query = {
+        //       dateOfGeneration: {
+        //         $gte: startOfMonth,
+        //         $lt: new Date(),
+        //       },
+        //     };
+        //     result = await ResultModel.find(query);
+        //   }
+        // }
+        console.log(e);
+      }
+      return result;
     };
 
     // const _getAmountSpentThisWeekAndThisMonth = async (zuid) => {
@@ -186,6 +239,7 @@ const DatabaseUtil = {
       updateLatestDiagramEntry: _updateLatestDiagramEntry,
       retriveMatchingDiagramEntry: _retriveMatchingDiagramEntry,
       getLongUrlForShortUrl: _getLongUrlForShortUrl,
+      getHistory: _getHistory,
     };
   })(),
 };

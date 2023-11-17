@@ -30,7 +30,9 @@ const Bots = (function () {
     reqData = data;
   };
   const _handleNewDiagramRequest = async () => {
+    console.log("starts");
     _saveDiagram();
+    console.log("stops");
     const currentTime = reqData.params.message_details.time;
     const userId = reqData.params.user.id;
     const prompt = reqData.params.message;
@@ -79,8 +81,12 @@ const Bots = (function () {
         code = generatedCode.content.trim();
         const startSym = code.slice(0, 3);
         const endSym = code.slice(code.length - 3, code.length);
-        if (startSym !== "```") code = "```" + code;
-        if (endSym !== "```") code = code + "```";
+        // if (startSym !== "```") code = "```" + code;
+        // if (endSym !== "```") code = code + "```";
+        if (startSym !== "```") {
+          console.log("starts", startSym, endSym);
+          code = "```" + code + "```";
+        }
         try {
           console.log(code);
           urls = converter.mdToSVG(code);
@@ -122,6 +128,7 @@ const Bots = (function () {
           prompt: prompt,
           dateOfGeneration: new Date(),
         });
+        console.log("done");
       }
     } catch (error) {
       console.log(error);

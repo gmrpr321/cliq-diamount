@@ -68,7 +68,7 @@ function getWaitText(size) {
 }
 function getWelcomeText() {
   const data =
-    "Hey, Thank you for subscribing.\nType in the chat to generate a diagram with just a prompt string\nYour prompts can look something like this...\n\nExplain the components of a plane\n\nHow MongoDB works ? \n\nGive a sequencce diagram to demonstrate the working of REST APIs.\n\n\nThis bot produces AI generated Diagrams, it may contain inaccurate results.";
+    "Hey, Thank you for subscribing.\nType in the chat to generate a diagram with just a prompt string\nYour prompts can look something like this...\n\nExplain the components of a plane\n\nHow MongoDB works ? \n\nGive a sequence diagram to demonstrate the working of REST APIs.\n\n\nThis bot produces AI generated Diagrams, it may contain inaccurate results.";
   return data;
 }
 module.exports = { getPrompts, getWaitText, getWelcomeText };

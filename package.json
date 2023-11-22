@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mermaid-to-svg": "file:./mermaid-js-converter",
+    "self-mermaid-to-svg": "file:./mermaid-js-converter",
     "mongoose": "^6.1.0",
     "morgan": "^1.10.0",
     "openai": "^4.17.4",

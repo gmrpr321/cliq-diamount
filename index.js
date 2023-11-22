@@ -14,12 +14,6 @@ app.use(morgan("[:date[web]] :method :url :status :total-time ms"));
 
 app.use("/api/v1/diamount", appController); //NO I18N
 
-// app.use("/", (req, res) => {
-//   return res.status(200).json({
-//     message: "Welcome! Enter a prompt to generate a diagram", //NO I18N
-//   });
-// });
-
 app.get("/:timenum/:shortCode", async (req, res) => {
   const { timenum, shortCode } = req.params;
   const url = await DatabaseUtil.resultModel.getLongUrlForShortUrl(
@@ -35,6 +29,11 @@ app.get("/:timenum/:shortCode", async (req, res) => {
   }
 });
 
+app.use("/", (req, res) => {
+  return res.status(200).json({
+    message: "Welcome! Enter a prompt to generate a diagram", //NO I18N
+  });
+});
 app.use((req, res) => {
   return res.status(404).json({
     message: "Not Found: Incorrect URL.",

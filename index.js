@@ -37,7 +37,8 @@ app.get("/:timenum/:shortCode", async (req, res) => {
 
 app.use((req, res) => {
   return res.status(404).json({
-    message: "Not Found: Incorrect URL.", //NO I18N
+    message: "Not Found: Incorrect URL.",
+    url: req.url, //NO I18N
   });
 });
 

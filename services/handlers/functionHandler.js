@@ -41,7 +41,7 @@ const Functions = (function () {
       console.log("entry", matchingEntry);
       if (!matchingEntry)
         return {
-          text: "Diagram Generation in-progress, Please click the button after a few seconds.\nPlease try again if you don't get the Diagram within 2 minutes",
+          text: "Diagram Generation in-progress, Please click the button after a few seconds.\nPlease prompt again if you don't get the Diagram within 2 minutes",
         };
       return {
         text: matchingEntry.prompt,

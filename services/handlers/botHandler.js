@@ -88,7 +88,7 @@ const Bots = (function () {
           code = "```" + code + "```";
         }
         try {
-          console.log(code);
+          console.log(code, "codee");
           urls = converter.mdToSVG(code);
           const regex = /\!\[\]\((https:\/\/[^\s)]+)\)/;
 

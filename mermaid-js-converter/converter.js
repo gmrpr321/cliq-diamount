@@ -2,7 +2,7 @@ const Base64 = require("js-base64");
 
 function mdToSVG(data) {
   const matchData = data.match(/```mermaid(.|\n)*?```/gm);
-
+  console.log("static theeme");
   const jsonStrings = matchData
     .map((item) => item.replace("```mermaid", "").replace("```", ""))
     // Workaround for classdiagram

@@ -43,7 +43,7 @@ async function saveDiagram(data) {
       }
       try {
         console.log(code);
-        urls = converter.mdToSVG(code);
+        urls = mdToSVG(code);
         const regex = /\!\[\]\((https:\/\/[^\s)]+)\)/;
 
         const match = urls.match(regex);
@@ -69,7 +69,7 @@ async function saveDiagram(data) {
       console.log(
         "Short URL",
         shortUrl,
-        `localhost:8080/${userId}/${shortCode}`
+        `https://worried-culottes-elk.cyclic.app/${userId}/${shortCode}`
       );
       //
 

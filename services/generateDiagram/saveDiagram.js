@@ -3,7 +3,7 @@ const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
 const OpenAI = require("openai");
 const { openaiKey, baseUrl } = require("../../config/extensionKeys");
 const { getPrompts, getWaitText, getWelcomeText } = require("../utils/prompts");
-const { converter } = require("mermaid-to-svg");
+const { mdToSVG } = require("../converter/converter");
 const shortid = require("shortid");
 async function saveDiagram(data) {
   const reqData = data.msgData;

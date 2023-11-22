@@ -2,7 +2,7 @@ const CommonUtil = require("../utils/commonUtil"); //NO I18N
 const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
 const OpenAI = require("openai");
 const { getPrompts, getWaitText } = require("../utils/prompts");
-const { converter } = require("mermaid-to-svg");
+const { mdToSVG } = require("../converter/converter");
 const Functions = (function () {
   let reqData;
   let reqParams;

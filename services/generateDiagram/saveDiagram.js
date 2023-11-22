@@ -66,11 +66,7 @@ async function saveDiagram(data) {
     if (imageUrl) {
       const shortCode = shortid.generate();
       const shortUrl = `${baseUrl}/${currentTime}/${shortCode}`;
-      console.log(
-        "Short URL",
-        shortUrl,
-        `https://worried-culottes-elk.cyclic.app/${userId}/${shortCode}`
-      );
+      console.log("Short URL", shortUrl, `/${userId}/${shortCode}`);
       //
 
       await DatabaseUtil.resultModel.addDiagramEntry({

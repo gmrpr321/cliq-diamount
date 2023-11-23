@@ -77,6 +77,7 @@ const DatabaseUtil = {
     const _getLongUrlForShortUrl = async (timenum, shortCode) => {
       try {
         const filter = { timenum, shortCode };
+        console.log("performing shortern", filter);
         const matchingDiagram = await ResultModel.findOne(filter);
         if (matchingDiagram) return matchingDiagram.imageUrl;
       } catch (e) {

@@ -6,7 +6,7 @@ const ResultModel = mongoose.Schema({
     required: true,
   },
   timenum: {
-    type: Number,
+    type: String,
     index: true,
     default: 0,
   },

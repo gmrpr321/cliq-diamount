@@ -6,7 +6,7 @@ const config = require("./config/appKeys"); //NO I18N
 const appController = require("./controllers/appController"); //NO I18N
 
 const PORT = process.env.PORT || 8080;
-
+mongoose.set("strictQuery", false);
 const app = express();
 app.listen(PORT, async () => {
   try {

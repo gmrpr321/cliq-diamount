@@ -1,5 +1,5 @@
-const CommonUtil = require("../utils/commonUtil"); //NO I18N
-const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
+const CommonUtil = require("../utils/commonUtil");
+const DatabaseUtil = require("../utils/databaseUtil");
 const OpenAI = require("openai");
 const { getPrompts, getWaitText } = require("../utils/prompts");
 const { mdToSVG } = require("../converter/converter");
@@ -15,7 +15,6 @@ const Functions = (function () {
     if (handler === "button_handler") {
       response = await _buttonHandler();
     } else if (handler === "form_handler") {
-      //NO I18N
       response = await _formHandler();
     }
     return response;

@@ -1,7 +1,7 @@
-const Users = require("../../models/UsersModel"); //NO I18N
-const ResultModel = require("../../models/ResultModel"); //NO I18N
+const Users = require("../../models/UsersModel");
+const ResultModel = require("../../models/ResultModel");
 
-const CommonUtil = require("./commonUtil"); //NO I18N
+const CommonUtil = require("./commonUtil");
 const { query } = require("express");
 
 const DatabaseUtil = {
@@ -21,7 +21,7 @@ const DatabaseUtil = {
     };
 
     const _getCurrency = async (zuid) => {
-      const doc = await Users.findOne({ zuid }, "currency").lean(); //NO I18N
+      const doc = await Users.findOne({ zuid }, "currency").lean();
       return doc.currency;
     };
 
@@ -140,17 +140,17 @@ const DatabaseUtil = {
     //     { $match: { zuid } },
     //     {
     //       $group: {
-    //         _id: "$zuid", //NO I18N
+    //         _id: "$zuid",
     //         thisweek: {
     //           $sum: {
     //             $cond: [
     //               {
     //                 $and: [
-    //                   { $gte: ["$date", CommonUtil.getLastMonday()] }, //NO I18N
-    //                   { $lte: ["$date", today] }, //NO I18N
+    //                   { $gte: ["$date", CommonUtil.getLastMonday()] },
+    //                   { $lte: ["$date", today] },
     //                 ],
     //               },
-    //               "$amount", //NO I18N
+    //               "$amount",
     //               0,
     //             ],
     //           },
@@ -162,11 +162,11 @@ const DatabaseUtil = {
     //                 $and: [
     //                   {
     //                     $gte: ["$date", CommonUtil.getFirstDayOfCurrentMonth()],
-    //                   }, //NO I18N
-    //                   { $lte: ["$date", today] }, //NO I18N
+    //                   },
+    //                   { $lte: ["$date", today] },
     //                 ],
     //               },
-    //               "$amount", //NO I18N
+    //               "$amount",
     //               0,
     //             ],
     //           },
@@ -191,13 +191,13 @@ const DatabaseUtil = {
     //     { $sort: { date: -1 } },
     //     {
     //       $group: {
-    //         _id: "$zuid", //NO I18N
+    //         _id: "$zuid",
     //         expenses: {
     //           $push: {
-    //             date: "$date", //NO I18N
-    //             category: "$category", //NO I18N
-    //             note: "$note", //NO I18N
-    //             amount: "$amount", //NO I18N
+    //             date: "$date",
+    //             category: "$category",
+    //             note: "$note",
+    //             amount: "$amount",
     //           },
     //         },
     //       },
@@ -222,8 +222,8 @@ const DatabaseUtil = {
     //     },
     //     {
     //       $group: {
-    //         _id: { $month: "$date" }, //NO I18N
-    //         totalExpense: { $sum: "$amount" }, //NO I18N
+    //         _id: { $month: "$date" },
+    //         totalExpense: { $sum: "$amount" },
     //       },
     //     },
     //     {

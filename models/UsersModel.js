@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");	//NO I18N
+const mongoose = require("mongoose");
 
 const UsersModel = mongoose.Schema({
-	zuid: {
-		type: String,
-		required: true,
-		index: true,
-		unique: true
-	},
-	currency: String
+  zuid: {
+    type: String,
+    required: true,
+    index: true,
+    unique: true,
+  },
+  currency: String,
 });
 
-module.exports = mongoose.model("Users", UsersModel);	//NO I18N
+module.exports = mongoose.model("Users", UsersModel);

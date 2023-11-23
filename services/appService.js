@@ -1,5 +1,5 @@
-const Bots = require("./handlers/botHandler"); //NO I18N
-const Functions = require("./handlers/functionHandler"); //NO I18N
+const Bots = require("./handlers/botHandler");
+const Functions = require("./handlers/functionHandler");
 const DatabaseUtil = require("./utils/databaseUtil");
 const appService = async (reqData) => {
   const component = reqData.type;
@@ -30,7 +30,6 @@ const appService = async (reqData) => {
   if (component === "function") {
     responseOutput = await Functions.handler(reqData);
   } else if (component === "bot") {
-    //NO I18N
     responseOutput = await Bots.handler(reqData);
   }
   return responseOutput;

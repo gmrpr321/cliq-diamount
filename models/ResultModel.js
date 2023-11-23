@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"); //NO I18N
+const mongoose = require("mongoose");
 
 const ResultModel = mongoose.Schema({
   zuid: {
@@ -33,4 +33,4 @@ const ResultModel = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("ResultModel", ResultModel); //NO I18N
+module.exports = mongoose.model("ResultModel", ResultModel);

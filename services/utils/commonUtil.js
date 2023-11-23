@@ -1,65 +1,65 @@
-const crypto = require("crypto"); //NO I18N
+const crypto = require("crypto");
 
-const config = require("../../config/appKeys"); //NO I18N
+const config = require("../../config/appKeys");
 
 const CommonUtil = (function () {
   const _isValidCliqSignature = (req) => {
     let isValidSignature = false;
-    const signature = req.headers["x-cliq-signature"]; //NO I18N
+    const signature = req.headers["x-cliq-signature"];
     if (typeof signature !== "undefined") {
-      const verifier = crypto.createVerify("sha256"); //NO I18N
+      const verifier = crypto.createVerify("sha256");
       verifier.update(JSON.stringify(req.body));
-      let publicKey = "-----BEGIN PUBLIC KEY-----\n"; //NO I18N
+      let publicKey = "-----BEGIN PUBLIC KEY-----\n";
       publicKey += config.CLIQ_APP_PUBLIC_KEY;
-      publicKey += "\n-----END PUBLIC KEY-----"; //NO I18N
-      isValidSignature = verifier.verify(publicKey, signature, "base64"); //NO I18N
+      publicKey += "\n-----END PUBLIC KEY-----";
+      isValidSignature = verifier.verify(publicKey, signature, "base64");
     }
     return isValidSignature;
   };
 
   const _isEmptyString = (value) => {
     return (
-      (typeof value == "string" && !value.trim()) || //NO I18N
-      typeof value == "undefined" || //NO I18N
+      (typeof value == "string" && !value.trim()) ||
+      typeof value == "undefined" ||
       value === null
     );
   };
 
   const _getBannerResponse = (text, isFailure) => {
-    let response = { type: "banner", text, status: "success" }; //NO I18N
+    let response = { type: "banner", text, status: "success" };
     if (isFailure) {
-      response.status = "failure"; //NO I18N
+      response.status = "failure";
     }
     return response;
   };
 
   const _getSettingsResponse = (defaultCurrency) => ({
-    name: "settingsform", //NO I18N
-    type: "form", //NO I18N
-    title: "Expense Manager - Settings", //NO I18N
-    button_label: "Save", //NO I18N
+    name: "settingsform",
+    type: "form",
+    title: "Expense Manager - Settings",
+    button_label: "Save",
     inputs: [
       {
-        type: "select", //NO I18N
-        name: "currency", //NO I18N
-        label: "Currency", //NO I18N
-        hint: "Choose your currency.", //NO I18N
-        placeholder: "INR", //NO I18N
+        type: "select",
+        name: "currency",
+        label: "Currency",
+        hint: "Choose your currency.",
+        placeholder: "INR",
         options: [
-          { label: "Australian Dollar - AUD", value: "AUD" }, //NO I18N
-          { label: "Chinese Renminbi - RMB", value: "RMB" }, //NO I18N
-          { label: "Euro - EUR", value: "EUR" }, //NO I18N
-          { label: "Indian Rupee - INR", value: "INR" }, //NO I18N
-          { label: "Japanese Yen - JPY", value: "JPY" }, //NO I18N
-          { label: "United States Dollar - USD", value: "USD" }, //NO I18N
+          { label: "Australian Dollar - AUD", value: "AUD" },
+          { label: "Chinese Renminbi - RMB", value: "RMB" },
+          { label: "Euro - EUR", value: "EUR" },
+          { label: "Indian Rupee - INR", value: "INR" },
+          { label: "Japanese Yen - JPY", value: "JPY" },
+          { label: "United States Dollar - USD", value: "USD" },
         ],
         mandatory: true,
         value: defaultCurrency || "",
       },
     ],
     action: {
-      type: "invoke.function", //NO I18N
-      name: "expensemanagerform", //NO I18N
+      type: "invoke.function",
+      name: "expensemanagerform",
     },
   });
 
@@ -67,7 +67,7 @@ const CommonUtil = (function () {
     let title;
     let rows = [];
     let totalExpense = 0;
-    const amountColumn = "Amount (" + data.currency + ")"; //NO I18N
+    const amountColumn = "Amount (" + data.currency + ")";
     expenses.forEach((eachExpense) => {
       rows.push({
         Date: _formatDateWOTime(eachExpense.date),
@@ -80,30 +80,30 @@ const CommonUtil = (function () {
     });
 
     if (frequency === "Weekly") {
-      title = "Expense for this week till " + _formatDateWOTime(data.toDate); //NO I18N
+      title = "Expense for this week till " + _formatDateWOTime(data.toDate);
     } else {
       title =
         "Expenses for the month - " +
         data.month +
         " " +
-        data.toDate.getFullYear(); //NO I18N
+        data.toDate.getFullYear();
     }
 
     let response = {
-      text: "Total Expense: " + totalExpense + " " + data.currency, //NO I18N
+      text: "Total Expense: " + totalExpense + " " + data.currency,
       card: {
         title: title,
-        theme: "modern-inline", //NO I18N
+        theme: "modern-inline",
       },
       bot: {
-        name: "Expense Manager", //NO I18N
-        image: "https://i.ibb.co/6YQcdpr/exp-mang.png", //NO I18N
+        name: "Expense Manager",
+        image: "https://i.ibb.co/6YQcdpr/exp-mang.png",
       },
       slides: [
         {
-          type: "table", //NO I18N
+          type: "table",
           data: {
-            headers: ["Date", "Category", "Note", amountColumn], //NO I18N
+            headers: ["Date", "Category", "Note", amountColumn],
             rows: rows,
           },
         },
@@ -148,18 +148,18 @@ const CommonUtil = (function () {
 
   const _getMonthName = (number) => {
     const monthNames = [
-      "January", //NO I18N
-      "February", //NO I18N
-      "March", //NO I18N
-      "April", //NO I18N
-      "May", //NO I18N
-      "June", //NO I18N
-      "July", //NO I18N
-      "August", //NO I18N
-      "September", //NO I18N
-      "October", //NO I18N
-      "November", //NO I18N
-      "December", //NO I18N
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     return monthNames[number - 1];
   };

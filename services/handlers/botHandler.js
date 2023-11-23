@@ -1,5 +1,5 @@
-const CommonUtil = require("../utils/commonUtil"); //NO I18N
-const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
+const CommonUtil = require("../utils/commonUtil");
+const DatabaseUtil = require("../utils/databaseUtil");
 const OpenAI = require("openai");
 const { openaiKey, baseUrl } = require("../../config/extensionKeys");
 const { getPrompts, getWaitText, getWelcomeText } = require("../utils/prompts");
@@ -13,10 +13,10 @@ const Bots = (function () {
     const handler = reqData.handler.type;
     console.log(handler);
     switch (handler) {
-      case "welcome_handler": //NO I18N
+      case "welcome_handler":
         response = await _welcomeHandler();
         break;
-      case "action_handler": //NO I18N
+      case "action_handler":
         response = await _actionHandler();
         break;
       case "message_handler":
@@ -136,7 +136,7 @@ const Bots = (function () {
   };
   const _welcomeHandler = async () => {
     return {
-      text: getWelcomeText(), //NO I18N
+      text: getWelcomeText(),
     };
   };
 
@@ -148,11 +148,11 @@ const Bots = (function () {
 
     const actionName = reqData.handler.name;
     switch (actionName) {
-      case "History": //NO I18N
+      case "History":
         return await _getUserHistory();
-      case "View Expense": //NO I18N
+      case "View Expense":
         return await _viewExpenses(currency);
-      case "Settings": //NO I18N
+      case "Settings":
         return await _settings(currency);
       case "demo":
         return {};
@@ -194,22 +194,22 @@ const Bots = (function () {
       }
 
       let buttons = [];
-      const buttonLabels = ["This Week", "This Month", "This Year"]; //NO I18N
+      const buttonLabels = ["This Week", "This Month", "This Year"];
       buttonLabels.forEach((label) => {
         buttons.push({
           label: label,
           action: {
             type: "invoke.function",
             data: { name: "expensemanagerbtn" },
-          }, //NO I18N
+          },
         });
       });
 
       //   let response = {
-      //     text: "Get the list of expenses.", //NO I18N
+      //     text: "Get the list of expenses.",
       //     card: {
-      //       title: "Expense History", //NO I18N
-      //       theme: "modern-inline", //NO I18N
+      //       title: "Expense History",
+      //       theme: "modern-inline",
       //     },
       //     buttons: buttons,
       //   };

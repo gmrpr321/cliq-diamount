@@ -1,9 +1,9 @@
-const express = require("express"); //NO I18N
-const morgan = require("morgan"); //NO I18N
-const mongoose = require("mongoose"); //NO I18N
-const DatabaseUtil = require("./services/utils/databaseUtil"); //NO I18N
-const config = require("./config/appKeys"); //NO I18N
-const appController = require("./controllers/appController"); //NO I18N
+const express = require("express");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const DatabaseUtil = require("./services/utils/databaseUtil");
+const config = require("./config/appKeys");
+const appController = require("./controllers/appController");
 
 const PORT = process.env.PORT || 8080;
 
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("[:date[web]] :method :url :status :total-time ms"));
 
-app.use("/api/v1/diamount", appController); //NO I18N
+app.use("/api/v1/diamount", appController);
 
 app.get("/:timenum/:shortCode", async (req, res) => {
   const { timenum, shortCode } = req.params;
@@ -31,13 +31,13 @@ app.get("/:timenum/:shortCode", async (req, res) => {
 
 app.use("/", (req, res) => {
   return res.status(200).json({
-    message: "Welcome! Enter a prompt to generate a diagram", //NO I18N
+    message: "Welcome! Enter a prompt to generate a diagram",
   });
 });
 app.use((req, res) => {
   return res.status(404).json({
     message: "Not Found: Incorrect URL.",
-    url: req.url, //NO I18N
+    url: req.url,
   });
 });
 
@@ -49,7 +49,7 @@ app.listen(PORT, async () => {
     });
     console.log("MongoDB connection SUCCESS");
   } catch (error) {
-    console.error("MongoDB connection FAILED"); //NO I18N
+    console.error("MongoDB connection FAILED");
   }
   console.log(`APP LISTENING ON PORT ${PORT} - ${new Date()}`);
 });

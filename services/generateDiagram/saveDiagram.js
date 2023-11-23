@@ -1,5 +1,5 @@
-const CommonUtil = require("../utils/commonUtil"); //NO I18N
-const DatabaseUtil = require("../utils/databaseUtil"); //NO I18N
+const CommonUtil = require("../utils/commonUtil");
+const DatabaseUtil = require("../utils/databaseUtil");
 const OpenAI = require("openai");
 const { openaiKey, baseUrl } = require("../../config/extensionKeys");
 const { getPrompts, getWaitText, getWelcomeText } = require("../utils/prompts");

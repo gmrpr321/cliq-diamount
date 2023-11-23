@@ -38,7 +38,7 @@ app.get("/:timenum/:shortCode", async (req, res) => {
     console.log("got long url");
     res.redirect(url);
   } else {
-    res.status(404).send("URL not found");
+    res.status(404).send(`URL not found ${url}`);
   }
 });
 

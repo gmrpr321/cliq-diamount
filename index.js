@@ -8,18 +8,15 @@ const appController = require("./controllers/appController"); //NO I18N
 const PORT = process.env.PORT || 8080;
 mongoose.set("strictQuery", false);
 const app = express();
-app.listen(PORT, async () => {
+const connectDB = async () => {
   try {
-    await mongoose.connect(config.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB connection SUCCESS");
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error("MongoDB connection FAILED"); //NO I18N
+    console.log(error);
+    process.exit(1);
   }
-  console.log(`APP LISTENING ON PORT ${PORT} - ${new Date()}`);
-});
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -51,5 +48,10 @@ app.use((req, res) => {
   return res.status(404).json({
     message: "Not Found: Incorrect URL.",
     url: req.url, //NO I18N
+  });
+});
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("listening for requests");
   });
 });

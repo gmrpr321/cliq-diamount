@@ -43,7 +43,8 @@ const Functions = (function () {
           text: "Diagram Generation in-progress, Please click the button after a few seconds.\nPlease prompt again if you don't get the Diagram within 2 minutes",
         };
       return {
-        text: matchingEntry.prompt,
+        title: matchingEntry.prompt,
+        text: `Image URL : ${matchingEntry.shortUrl}`,
         card: { theme: "modern-inline" },
         slides: [
           {

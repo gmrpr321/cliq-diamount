@@ -6,18 +6,8 @@ const config = require("./config/appKeys"); //NO I18N
 const appController = require("./controllers/appController"); //NO I18N
 
 const PORT = process.env.PORT || 8080;
-mongoose.set("strictQuery", false);
-const app = express();
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-};
 
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("[:date[web]] :method :url :status :total-time ms"));
@@ -35,7 +25,7 @@ app.get("/:timenum/:shortCode", async (req, res) => {
     console.log("got long url");
     res.redirect(url);
   } else {
-    res.status(404).send(`URL not found ${url}`);
+    res.status(404).send("URL not found");
   }
 });
 
@@ -50,8 +40,16 @@ app.use((req, res) => {
     url: req.url, //NO I18N
   });
 });
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log("listening for requests");
-  });
+
+app.listen(PORT, async () => {
+  try {
+    await mongoose.connect(config.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB connection SUCCESS");
+  } catch (error) {
+    console.error("MongoDB connection FAILED"); //NO I18N
+  }
+  console.log(`APP LISTENING ON PORT ${PORT} - ${new Date()}`);
 });

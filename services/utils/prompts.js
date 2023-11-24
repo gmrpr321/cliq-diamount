@@ -17,7 +17,7 @@ function getPrompts(type, data) {
       by mermaid parser.first line of the result must always start with the keyword 'mermaid'.
       DO NOT GIVE ME ANY NOTES other than providing me the code.DO NOT SAY ANY NOTE OR EXPLANATION IN THE END
       DO NOT USE PIE DIAGRAMS.ALWAYS PREFER TD FOR FLOWCHARTS OVER LR.
-      dont accidently use keywords of mermaid as diagram lables 
+      dont accidently use keywords of mermaid as diagram lables.
       title : ${data["promptTitle"]}
       your reply structure : \`\`\`mermaid
                         //code

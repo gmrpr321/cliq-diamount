@@ -38,17 +38,20 @@ const Functions = (function () {
           paramTime
         );
       console.log("entry", matchingEntry);
+
       if (!matchingEntry)
         return {
           text: "Diagram Generation in-progress, Please click the button after a few seconds.\nPlease prompt again if you don't get the Diagram within 2 minutes",
         };
+      const title =
+        matchingEntry.prompt.length > 100 ? "Summary" : matchingEntry.prompt;
       return {
         text: `Image URL : ${matchingEntry.shortUrl}`,
         card: { theme: "modern-inline" },
         slides: [
           {
             type: "images",
-            title: `${matchingEntry.prompt}`,
+            title: `${title}`,
             data: [matchingEntry.shortUrl],
           },
         ],
@@ -62,17 +65,19 @@ const Functions = (function () {
     try {
       let response = {};
       const formName = reqParams.form.name;
-      console.log(formName);
       const formValues = reqParams.form.values;
       const zuid = reqParams.access.user_id;
-      // { select: { label: 'Past Week', value: 'pastWeek' } }
-
-      if (formName == "history") {
-        const results = await DatabaseUtil.resultModel.getHistory(
-          formValues.select.value
-        );
-        // console.log(results, "results", formValues.select.value);
+      console.log(formValues, "themeForm");
+      if (formName == "changeDiagramTheme") {
+        await DatabaseUtil.users.updateThemePreference(zuid, {
+          zuid: zuid,
+          theme: formValues.themeRadio.value,
+        });
       }
+      response = {
+        text: "Your Diagram Theme has been Updated Successfully",
+      };
+      return response;
     } catch (error) {
       throw error;
     }

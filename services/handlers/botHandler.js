@@ -26,21 +26,26 @@ const Bots = (function () {
     return response;
   };
 
-  const _initialize = (data) => {
+  const _initialize = async (data) => {
+    console.log("INITDATA", data);
+    const init_user_id = data.params.access.user_id;
+    const is_present = DatabaseUtil.users.doesUserExists(init_user_id);
+    if (!is_present) {
+      await DatabaseUtil.users.addUser({ zuid: init_user_id, theme: "light" });
+    }
     reqData = data;
   };
   const _handleNewDiagramRequest = async () => {
-    console.log("starts");
     _saveDiagram();
-    console.log("stops");
     const currentTime = reqData.params.message_details.time;
     const userId = reqData.params.user.id;
     const prompt = reqData.params.message;
+    const title = prompt.length > 100 ? "Summary" : prompt;
     console.log("message-JSON", reqData);
     //avoid generating diagrams before the last request has been generated
     let response = {
       text: getWaitText("small"),
-      card: { title: prompt, theme: "modern-inline" },
+      card: { title: title, theme: "modern-inline" },
       buttons: [
         {
           label: "Get Diagram",
@@ -106,11 +111,17 @@ const Bots = (function () {
           return;
         }
       }
-      const imageUrl = await generateMermaid(prompt, {
+      let imageUrl = await generateMermaid(prompt, {
         size: "small",
       });
       if (imageUrl) {
+        //perform theme modifications
+        const lightTheme = "?bgColor=FFFFFF";
+        const darkTheme = "?bgColor=878787";
         const shortCode = shortid.generate();
+        const theme = await DatabaseUtil.users.getTheme(userId);
+        if (theme === "Dark") imageUrl = imageUrl + darkTheme;
+        else imageUrl = imageUrl + lightTheme;
         const shortUrl = `${baseUrl}/${currentTime}/${shortCode}`;
         console.log(
           "Short URL",
@@ -143,19 +154,15 @@ const Bots = (function () {
   const _actionHandler = async () => {
     const zuid = reqData.params.access.user_id;
     if (!(await DatabaseUtil.users.doesUserExists(zuid))) {
-      await DatabaseUtil.users.addUser(zuid);
+      await DatabaseUtil.users.addUser({ zuid: zuid, theme: "Light" });
     }
 
     const actionName = reqData.handler.name;
     switch (actionName) {
       case "History":
         return await _getUserHistory();
-      case "View Expense":
-        return await _viewExpenses(currency);
-      case "Settings":
-        return await _settings(currency);
-      case "demo":
-        return {};
+      case "Theme":
+        return await _changeDiagramTheme();
     }
   };
 
@@ -164,11 +171,15 @@ const Bots = (function () {
     try {
       const recentRecords =
         await DatabaseUtil.resultModel.retriveLatestDiagramEntry(zuid);
+      if (recentRecords.length === 0) {
+        return {
+          text: "No Recent Diagrams available, Please prompt some diagrams to view them later",
+        };
+      }
       let urls = [];
       for (const temp of recentRecords) {
         urls.push(temp.shortUrl);
       }
-      console.log(urls, "Reccent");
 
       const response = {
         text: "List of Recent Diagrams",
@@ -187,57 +198,38 @@ const Bots = (function () {
     }
   };
 
-  const _viewExpenses = async (currency) => {
+  const _changeDiagramTheme = async () => {
     try {
-      if (currency === undefined) {
-        return CommonUtil.getSettingsResponse();
-      }
-
-      let buttons = [];
-      const buttonLabels = ["This Week", "This Month", "This Year"];
-      buttonLabels.forEach((label) => {
-        buttons.push({
-          label: label,
-          action: {
-            type: "invoke.function",
-            data: { name: "expensemanagerbtn" },
-          },
-        });
-      });
-
-      //   let response = {
-      //     text: "Get the list of expenses.",
-      //     card: {
-      //       title: "Expense History",
-      //       theme: "modern-inline",
-      //     },
-      //     buttons: buttons,
-      //   };
-      let response = {
-        text: "sadfsadf",
-        card: {
-          theme: "modern-inline",
-        },
-        slides: [
+      const response = {
+        type: "form",
+        title: "Change Diagram Theme",
+        name: "changeDiagramTheme",
+        hint: "Select any one of the options to change the theme of your diagram",
+        button_label: "Submit",
+        inputs: [
           {
-            type: "images",
-            title: "Title for your Images",
-            data: [
-              "https://mermaid.ink/img/eyJjb2RlIjoiXG4gIHRpbWVsaW5lXG4gICAgdGl0bGUgSGlzdG9yeSBvZiBTb2NpYWwgTWVkaWEgUGxhdGZvcm1cbiAgICAyMDAyIDogTGlua2VkSW5cbiAgICAyMDA0IDogRmFjZWJvb2tcbiAgICAgICAgIDogR29vZ2xlXG4gICAgMjAwNSA6IFlvdXR1YmVcbiAgICAyMDA2IDogVHdpdHRlclxuICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ",
+            name: "themeRadio",
+            label: "Theme",
+            mandatory: false,
+            type: "radio",
+            options: [
+              {
+                value: "Light",
+                label: "Light",
+              },
+              {
+                value: "Dark",
+                label: "Dark",
+              },
             ],
           },
         ],
+        action: {
+          type: "invoke.function",
+          name: "changeDiagramTheme",
+        },
       };
-
       return response;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const _settings = async (currency) => {
-    try {
-      return CommonUtil.getSettingsResponse(currency);
     } catch (error) {
       throw error;
     }

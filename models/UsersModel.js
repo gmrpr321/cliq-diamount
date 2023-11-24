@@ -7,7 +7,7 @@ const UsersModel = mongoose.Schema({
     index: true,
     unique: true,
   },
-  currency: String,
+  theme: String,
 });
 
 module.exports = mongoose.model("Users", UsersModel);

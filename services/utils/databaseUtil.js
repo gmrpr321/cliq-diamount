@@ -1,35 +1,33 @@
 const Users = require("../../models/UsersModel");
 const ResultModel = require("../../models/ResultModel");
 
-const CommonUtil = require("./commonUtil");
-const { query } = require("express");
-
 const DatabaseUtil = {
   users: (function () {
     const _doesUserExists = async (zuid) => {
       return await Users.exists({ zuid });
     };
 
-    const _addUser = async (zuid) => {
-      const doc = new Users({ zuid });
+    const _addUser = async (data) => {
+      const doc = new Users(data);
       await doc.save();
     };
 
-    const _updateSettings = async (zuid, update) => {
+    const _updateThemePreference = async (zuid, update) => {
       const doc = Users.findOneAndUpdate({ zuid }, update);
       await doc.exec();
     };
 
-    const _getCurrency = async (zuid) => {
-      const doc = await Users.findOne({ zuid }, "currency").lean();
-      return doc.currency;
+    const _getTheme = async (zuid) => {
+      const doc = await Users.findOne({ zuid });
+      console.log("fromDB", doc);
+      return doc.theme;
     };
 
     return {
       doesUserExists: _doesUserExists,
       addUser: _addUser,
-      updateSettings: _updateSettings,
-      getCurrency: _getCurrency,
+      updateThemePreference: _updateThemePreference,
+      getTheme: _getTheme,
     };
   })(),
 
@@ -84,163 +82,12 @@ const DatabaseUtil = {
         console.log("Error in fetching longUrlData", e);
       }
     };
-    const _getHistory = async (type) => {
-      let result = {};
-      try {
-      } catch (e) {
-        // try {
-        //   if (type === "today") {
-        //     const today = new Date();
-        //     const startOfDay = today.setHours(0, 0, 0, 0);
-        //     const query = {
-        //       dateOfGeneration: {
-        //         $gte: startOfDay,
-        //         $lt: new Date(),
-        //       },
-        //     };
-        //     result = await ResultModel.find(query);
-        //     console.log(result, "lkk");
-        //   } else if (type === "pastWeek") {
-        //     const today = new Date();
-        //     const startOfWeek = new Date();
-        //     startOfWeek.setDate(today.getDate() - today.getDay());
-        //     startOfWeek.setTime(0, 0, 0, 0);
-        //     const query = {
-        //       dateOfGeneration: {
-        //         $gte: startOfWeek,
-        //         $lt: new Date(),
-        //       },
-        //     };
-        //     result = await ResultModel.find(query);
-        //   } else if (type === "pastMonth") {
-        //     const today = new Date();
-        //     const startOfMonth = new Date(
-        //       today.getFullYear(),
-        //       today.getMonth(),
-        //       1
-        //     );
-        //     startOfMonth.setTime(0, 0, 0, 0);
-        //     query = {
-        //       dateOfGeneration: {
-        //         $gte: startOfMonth,
-        //         $lt: new Date(),
-        //       },
-        //     };
-        //     result = await ResultModel.find(query);
-        //   }
-        // }
-        console.log(e);
-      }
-      return result;
-    };
-
-    // const _getAmountSpentThisWeekAndThisMonth = async (zuid) => {
-    //   let today = new Date();
-    //   let pipeline = [
-    //     { $match: { zuid } },
-    //     {
-    //       $group: {
-    //         _id: "$zuid",
-    //         thisweek: {
-    //           $sum: {
-    //             $cond: [
-    //               {
-    //                 $and: [
-    //                   { $gte: ["$date", CommonUtil.getLastMonday()] },
-    //                   { $lte: ["$date", today] },
-    //                 ],
-    //               },
-    //               "$amount",
-    //               0,
-    //             ],
-    //           },
-    //         },
-    //         thismonth: {
-    //           $sum: {
-    //             $cond: [
-    //               {
-    //                 $and: [
-    //                   {
-    //                     $gte: ["$date", CommonUtil.getFirstDayOfCurrentMonth()],
-    //                   },
-    //                   { $lte: ["$date", today] },
-    //                 ],
-    //               },
-    //               "$amount",
-    //               0,
-    //             ],
-    //           },
-    //         },
-    //       },
-    //     },
-    //   ];
-    //   const expense = await Expenses.aggregate(pipeline);
-    //   return expense[0];
-    // };
-
-    // const _getExpense = async (zuid, fromDate, toDate) => {
-    //   let pipeline = [
-    //     {
-    //       $match: {
-    //         $and: [
-    //           { zuid: { $eq: zuid } },
-    //           { date: { $gte: fromDate, $lte: toDate } },
-    //         ],
-    //       },
-    //     },
-    //     { $sort: { date: -1 } },
-    //     {
-    //       $group: {
-    //         _id: "$zuid",
-    //         expenses: {
-    //           $push: {
-    //             date: "$date",
-    //             category: "$category",
-    //             note: "$note",
-    //             amount: "$amount",
-    //           },
-    //         },
-    //       },
-    //     },
-    //   ];
-    //   let allExpenses = await Expenses.aggregate(pipeline);
-    //   if (allExpenses.length > 0) {
-    //     allExpenses = allExpenses[0].expenses;
-    //   }
-    //   return allExpenses;
-    // };
-
-    // const _getOverallExepenseForYear = async (zuid, fromDate, toDate) => {
-    //   let pipeline = [
-    //     {
-    //       $match: {
-    //         $and: [
-    //           { zuid: { $eq: zuid } },
-    //           { date: { $gte: fromDate, $lte: toDate } },
-    //         ],
-    //       },
-    //     },
-    //     {
-    //       $group: {
-    //         _id: { $month: "$date" },
-    //         totalExpense: { $sum: "$amount" },
-    //       },
-    //     },
-    //     {
-    //       $sort: { _id: 1 },
-    //     },
-    //   ];
-    //   const allExpenses = await Expenses.aggregate(pipeline);
-    //   return allExpenses;
-    // };
-
     return {
       addDiagramEntry: _addDiagramEntry,
       retriveLatestDiagramEntry: _retriveLatestDiagramEntry,
       updateLatestDiagramEntry: _updateLatestDiagramEntry,
       retriveMatchingDiagramEntry: _retriveMatchingDiagramEntry,
       getLongUrlForShortUrl: _getLongUrlForShortUrl,
-      getHistory: _getHistory,
     };
   })(),
 };

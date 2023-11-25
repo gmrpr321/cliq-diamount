@@ -8,6 +8,15 @@ const appController = require("./controllers/appController");
 const PORT = process.env.PORT || 8080;
 
 const app = express();
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(config.MONGODB_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("[:date[web]] :method :url :status :total-time ms"));
@@ -41,15 +50,8 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, async () => {
-  try {
-    await mongoose.connect(config.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB connection SUCCESS");
-  } catch (error) {
-    console.error("MongoDB connection FAILED");
-  }
-  console.log(`APP LISTENING ON PORT ${PORT} - ${new Date()}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("listening for requests");
+  });
 });

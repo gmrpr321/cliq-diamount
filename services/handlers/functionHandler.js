@@ -46,7 +46,7 @@ const Functions = (function () {
       const title =
         matchingEntry.prompt.length > 100 ? "Summary" : matchingEntry.prompt;
       const returnUrl =
-        matchingEntry.imageUrl.length > 300
+        matchingEntry.imageUrl.length > 400
           ? matchingEntry.shortUrl
           : matchingEntry.imageUrl;
       return {

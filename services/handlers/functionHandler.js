@@ -45,22 +45,19 @@ const Functions = (function () {
         };
       const title =
         matchingEntry.prompt.length > 100 ? "Summary" : matchingEntry.prompt;
-      const returnUrl =
-        matchingEntry.imageUrl.length > 1000
-          ? matchingEntry.shortUrl
-          : matchingEntry.imageUrl;
-      if (returnUrl.length < 1000)
+      if (matchingEntry.imageUrl.length < 1000) {
         return {
-          text: `Diagram URL : ${returnUrl}`,
+          text: `Diagram URL : ${matchingEntry.imageUrl}`,
           card: { theme: "modern-inline" },
           slides: [
             {
               type: "images",
               title: `${title}`,
-              data: [returnUrl],
+              data: [matchingEntry.imageUrl],
             },
           ],
         };
+      }
 
       return {
         text: `Diagram is too big to be viewed here, here is the URL for the image`,
@@ -69,7 +66,7 @@ const Functions = (function () {
           {
             type: "text",
             title: "",
-            data: `${returnUrl}`,
+            data: `${matchingEntry.shortUrl}`,
           },
         ],
       };

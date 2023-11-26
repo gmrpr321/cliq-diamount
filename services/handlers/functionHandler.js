@@ -45,6 +45,10 @@ const Functions = (function () {
         };
       const title =
         matchingEntry.prompt.length > 100 ? "Summary" : matchingEntry.prompt;
+      const returnUrl =
+        matchingEntry.imageUrl.length > 300
+          ? matchingEntry.shortUrl
+          : matchingEntry.imageUrl;
       return {
         text: `Image URL : ${matchingEntry.shortUrl}`,
         card: { theme: "modern-inline" },
@@ -52,7 +56,7 @@ const Functions = (function () {
           {
             type: "images",
             title: `${title}`,
-            data: [matchingEntry.shortUrl],
+            data: [returnUrl],
           },
         ],
       };

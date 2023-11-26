@@ -62,7 +62,7 @@ function getWaitText(size) {
   if (size == "small")
     return "It may take 10-30 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagarm.";
   if (size == "medium")
-    return "It may take 15-30 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagram.";
+    return "It may take 15-30 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagram";
   if (size == "large")
     return "It may take 30-60 seconds to generate the diagram.Please wait\n\nClick the button to retrieve the diagram.Once the generation is complete, you will get the diagram.";
 }

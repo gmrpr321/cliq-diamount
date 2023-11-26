@@ -180,7 +180,7 @@ const Bots = (function () {
       for (const temp of recentRecords) {
         if (temp.imageUrl.length < 1000) urls.push(temp.iamgeUrl);
       }
-
+      console.log("History Urls", urls);
       const response = {
         text: "List of Recent Diagrams",
         card: { theme: "modern-inline" },

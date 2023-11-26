@@ -48,7 +48,6 @@ const DatabaseUtil = {
       if (result.length > 25) {
         result.length = 25;
       }
-      console.log("result", result);
       return result;
     };
     const _updateLatestDiagramEntry = async (zuid, time, imageUrl) => {

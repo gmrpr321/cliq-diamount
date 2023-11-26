@@ -6,13 +6,13 @@ const appService = require("../services/appService");
 router.post("/", async (req, res) => {
   let responseOutput = {};
   try {
-    if (!CommonUtil.isValidCliqSignature(req)) {
-      return res.status(401).json({
-        output: {
-          text: "Unauthorized Request:Invalid signature.",
-        },
-      });
-    }
+    // if (!CommonUtil.isValidCliqSignature(req)) {
+    //   return res.status(401).json({
+    //     output: {
+    //       text: "Unauthorized Request:Invalid signature.",
+    //     },
+    //   });
+    // }
     responseOutput = await appService(req.body);
   } catch (error) {
     console.log(error);

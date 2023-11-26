@@ -178,7 +178,7 @@ const Bots = (function () {
       }
       let urls = [];
       for (const temp of recentRecords) {
-        if (temp.imageUrl.length < 1000) urls.push(temp.iamgeUrl);
+        if (temp.imageUrl.length < 1000) urls.push(temp.imageUrl);
       }
       console.log("History Urls", urls);
       const response = {

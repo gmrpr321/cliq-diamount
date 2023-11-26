@@ -47,20 +47,25 @@ const Functions = (function () {
         matchingEntry.prompt.length > 100 ? "Summary" : matchingEntry.prompt;
       if (matchingEntry.imageUrl.length < 1000) {
         return {
-          text: `Diagram URL : ${matchingEntry.imageUrl}`,
+          text: `${title}`,
           card: { theme: "modern-inline" },
           slides: [
             {
               type: "images",
-              title: `${title}`,
+              title: ``,
               data: [matchingEntry.imageUrl],
+            },
+            {
+              type: "text",
+              title: ``,
+              data: `Diagram URL : ${matchingEntry.imageUrl}`,
             },
           ],
         };
       }
 
       return {
-        text: `Diagram is too big to be viewed here, here is the URL for the image`,
+        text: `Diagram is too big to be viewed here, here is the URL for the diagram`,
         card: { theme: "modern-inline" },
         slides: [
           {

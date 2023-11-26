@@ -50,7 +50,7 @@ const Functions = (function () {
           ? matchingEntry.shortUrl
           : matchingEntry.imageUrl;
       return {
-        text: `Image URL : ${matchingEntry.shortUrl}`,
+        text: `Image URL : ${returnUrl}`,
         card: { theme: "modern-inline" },
         slides: [
           {

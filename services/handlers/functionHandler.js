@@ -49,14 +49,27 @@ const Functions = (function () {
         matchingEntry.imageUrl.length > 1000
           ? matchingEntry.shortUrl
           : matchingEntry.imageUrl;
+      if (returnUrl.length < 1000)
+        return {
+          text: `Diagram URL : ${returnUrl}`,
+          card: { theme: "modern-inline" },
+          slides: [
+            {
+              type: "images",
+              title: `${title}`,
+              data: [returnUrl],
+            },
+          ],
+        };
+
       return {
-        text: `Image URL : ${returnUrl}`,
+        text: `Diagram is too big to be viewed here, here is the URL for the image`,
         card: { theme: "modern-inline" },
         slides: [
           {
-            type: "images",
-            title: `${title}`,
-            data: [returnUrl],
+            type: "text",
+            title: "",
+            data: `${returnUrl}`,
           },
         ],
       };
